@@ -56,7 +56,24 @@ A machine learning-powered recommendation engine that suggests products based on
 ---
 
 ## 📁 Folder Structure
-<pre> 📁 <b>product-recommender/</b> ├── 📄 <b>app.py</b> → Flask app entry point ├── 📄 <b>model.py</b> → SVD-based recommender model ├── 📄 <b>Beauty.csv</b> → Ratings dataset ├── 📁 <b>static/</b> → Static files (CSS, favicon) │ └── 📄 <b>favicon.ico</b> ├── 📁 <b>templates/</b> → HTML templates │ └── 📄 <b>index.html</b> └── 📄 <b>README.md</b> → Project documentation </pre>
+product-recommender/
+│
+├── app.py                  # 🔥 Flask application entry point
+├── model.py                # 🧠 SVD-based recommendation engine
+├── Beauty.csv              # 📊 Ratings dataset (UserId, ProductId, Rating)
+│
+├── static/                 # 🎨 Static assets
+│   ├── favicon.ico         #    → Navigate icon
+│
+├── templates/              # 🖼️ HTML templates
+│   └── index.html          #    → UI layout for the web app
+│
+├── images/                 # 📷 Screenshots or visuals for README
+│   ├── webpage_before.png
+│   └── webpage_after.png
+│
+└── README.md               # 📘 Project documentation
+
 
 ---
 
