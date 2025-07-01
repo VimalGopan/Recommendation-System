@@ -48,9 +48,10 @@ A machine learning-powered recommendation engine that suggests products based on
 
 ## 📷 Screenshots
 
-> Add a few screenshots or GIFs of:
 - Random products grid
+![Product Grid Screenshot](images/webpage_before.png)
 - Recommendations after clicking a product
+![Product Grid Screenshot](images/webpage_after.png)
 
 ---
 
