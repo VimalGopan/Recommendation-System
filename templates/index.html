@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+    <title>Product Recommendation</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            min-height: 100vh;
+            padding: 2rem;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            padding: 2rem 3rem;
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            background: linear-gradient(135deg, #3498db, #6dd5fa);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 2rem;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.7s ease;
+        }
+
+        h1:hover {
+            transform: scale(1.02);
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 1.5rem;
+        }
+        #product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            padding: 0;
+            margin: 1rem 0;
+            list-style-type: none;
+            min-height: 200px; 
+        }
+
+        #product-list li {
+            background-color: #ecf0f1;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
+        }
+
+        #product-list li:hover {
+            background-color: #d0d7de;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        
+        #recommendation-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            padding: 0;
+            margin-top: 1rem;
+            list-style-type: none;
+        }
+
+        #recommendation-list li {
+            background-color: #d6eaff;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: default;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease, box-shadow 0.2s ease;
+            user-select: none;
+        }
+
+        #product-list li, #recommendation-list li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 50px;
+        }
+
+        .selected {
+            background-color: #2980b9 !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(41, 128, 185, 0.7);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span style="font-weight: 400;">🔎</span> Product Recommendation System</h1>
+
+        <button id="randomBtn">🔄 Random Products</button>
+        <h2>Random Products</h2>
+        <ul id="product-list"></ul>
+
+        <h2 id="selected-product">Click a product to get recommendations</h2>
+        <h2 id="recommendation-title" style="display:none; margin-top:1.5rem; color:#34495e;">Recommended Products</h2>
+        <ul id="recommendation-list"></ul>
+    </div>
+
+    <script>
+        let currentlySelectedItem = null;
+
+        async function loadRandomProducts() {
+            const response = await fetch("/random-products");
+            const data = await response.json();
+            const productList = document.getElementById("product-list");
+            productList.innerHTML = "";
+            currentlySelectedItem = null;
+
+            data.products.forEach(product => {
+                const li = document.createElement("li");
+                li.innerText = product.name;
+                li.dataset.id = product.id;  // store ProductId for later
+                li.onclick = async () => {
+                    if (currentlySelectedItem) {
+                        currentlySelectedItem.classList.remove("selected");
+                    }
+                    li.classList.add("selected");
+                    currentlySelectedItem = li;
+
+                    await getRecommendations(product.id, product.name);
+                };
+                productList.appendChild(li);
+            });
+
+            document.getElementById("selected-product").innerText = "Click a product to get recommendations";
+            document.getElementById("recommendation-list").innerHTML = "";
+            document.getElementById("recommendation-title").style.display = "none";
+        }
+
+        async function getRecommendations(product_id, product_name) {
+            const response = await fetch("/recommend", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ product_id })
+            });
+            const data = await response.json();
+
+            document.getElementById("selected-product").innerHTML = `
+                Selected Product<br/><br/>
+                <div style="border:2px solid #2980b9; border-radius:8px; padding:10px; display:inline-block;">
+                    <div style="font-weight:700; font-size:1.1em; color:#2980b9;">${data.product_name}</div>
+                    <div style="margin-top:5px; font-size:0.9em; color:#555;">
+                    <small style="color:#555;">ID: ${data.product_id}</small>
+                    </div>
+                </div>
+                `;
+
+            const recTitle = document.getElementById("recommendation-title");
+            const recList = document.getElementById("recommendation-list");
+            recList.innerHTML = "";
+
+            if (data.recommendations.length === 0) {
+                recList.innerHTML = "<li>No recommendations found.</li>";
+                recTitle.style.display = "none";
+                return;
+            }
+
+            recTitle.style.display = "block";
+            data.recommendations.forEach(item => {
+                const li = document.createElement("li");
+                li.innerText = item.name;
+                recList.appendChild(li);
+            });
+        }
+
+        document.getElementById("randomBtn").addEventListener("click", loadRandomProducts);
+        window.onload = loadRandomProducts;
+    </script>
+
+</body>
+</html>
