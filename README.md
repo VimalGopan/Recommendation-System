@@ -42,7 +42,7 @@ A machine learning-powered recommendation engine that suggests products based on
 | Frontend     | HTML, CSS, JavaScript            |
 | ML Model     | Scikit-learn (Truncated SVD)     |
 | Data Handling| Pandas, NumPy                    |
-| Deployment   | Localhost / (Optional: Render, AWS, Heroku) |
+| Deployment   | Localhost                        |
 
 ---
 
@@ -51,7 +51,6 @@ A machine learning-powered recommendation engine that suggests products based on
 > Add a few screenshots or GIFs of:
 - Random products grid
 - Recommendations after clicking a product
-- Flask terminal output (optional)
 
 ---
 
