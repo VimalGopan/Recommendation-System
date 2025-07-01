@@ -77,6 +77,23 @@ product-recommender/
 
 ---
 
+[Download Beauty.csv](./Beauty.csv)
+
+<p>
+  <a href="https://drive.google.com/file/d/1AACJmkidPgfohvFqbineABSr0hqgr6zG/view?usp=drive_link" download style="
+      background-color:#2d89ef;
+      color:white;
+      padding:10px 18px;
+      text-decoration:none;
+      border-radius:5px;
+      font-weight:bold;
+      font-size:16px;
+      display:inline-block;">
+    ⬇️ Download
+  </a>
+</p>
+
+
 ## 🚀 How to Run Locally
 
 ```bash
@@ -84,4 +101,3 @@ git clone https://github.com/yourusername/product-recommender
 cd product-recommender
 pip install -r requirements.txt
 python app.py
-
