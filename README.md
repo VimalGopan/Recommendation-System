@@ -77,8 +77,6 @@ product-recommender/
 
 ---
 
-[Download Beauty.csv](./Beauty.csv)
-
 <p>
   <a href="https://drive.google.com/file/d/1AACJmkidPgfohvFqbineABSr0hqgr6zG/view?usp=drive_link" download style="
       background-color:#2d89ef;
